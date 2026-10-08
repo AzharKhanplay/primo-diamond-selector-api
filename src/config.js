@@ -18,6 +18,8 @@ export const config = {
   cacheTtlSeconds: Number(process.env.DIAMOND_CACHE_TTL || 60),
   nivoda: {
     apiUrl: process.env.NIVODA_API_URL || '',
+    username: process.env.NIVODA_USERNAME || '',
+    password: process.env.NIVODA_PASSWORD || '',
     clientId: process.env.NIVODA_CLIENT_ID || '',
     clientSecret: process.env.NIVODA_CLIENT_SECRET || '',
     apiKey: process.env.NIVODA_API_KEY || '',
@@ -25,6 +27,6 @@ export const config = {
 };
 
 export function isNivodaConfigured() {
-  const { apiUrl, clientId, clientSecret, apiKey } = config.nivoda;
-  return Boolean(apiUrl && (apiKey || (clientId && clientSecret)));
+  const { apiUrl, username, password } = config.nivoda;
+  return Boolean(apiUrl && username && password);
 }

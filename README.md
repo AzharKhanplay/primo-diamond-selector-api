@@ -50,16 +50,30 @@ CORS_ORIGINS=https://your-api.vercel.app,https://www.primodiamonds.co.uk,https:/
 |----------|----------|-------------|
 | `DIAMOND_PROVIDER` | No | `mock` (default) or `nivoda` |
 | `CORS_ORIGINS` | Yes (production) | Comma-separated allowed browser origins |
-| `NIVODA_API_URL` | For Nivoda | API base URL |
-| `NIVODA_CLIENT_ID` / `NIVODA_CLIENT_SECRET` | For Nivoda | OAuth credentials (if applicable) |
-| `NIVODA_API_KEY` | For Nivoda | API key (if applicable) |
+| `NIVODA_API_URL` | For Nivoda | GraphQL endpoint (e.g. staging `…/api/diamonds`) |
+| `NIVODA_USERNAME` | For Nivoda | Nivoda account email |
+| `NIVODA_PASSWORD` | For Nivoda | Nivoda account password |
 | `DIAMOND_CACHE_TTL` | No | Cache TTL in seconds (default 60) |
 
 Do **not** commit `.env` or real credentials.
 
 ## Nivoda
 
-The Nivoda provider is a **stub** until official API documentation and credentials are available. Do not invent endpoints or auth methods.
+Uses the same **GraphQL + username/password auth** pattern as the existing `theme-1` ring builder:
+
+1. `authenticate.username_and_password` → Bearer token  
+2. `diamonds_by_query` → search results  
+
+Credentials belong **only** in this API’s environment variables — never in the Shopify theme.
+
+Staging example:
+
+```text
+DIAMOND_PROVIDER=nivoda
+NIVODA_API_URL=https://intg-customer-staging.nivodaapi.net/api/diamonds
+NIVODA_USERNAME=your-staging-email
+NIVODA_PASSWORD=your-staging-password
+```
 
 ## Architecture
 
