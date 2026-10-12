@@ -141,9 +141,7 @@ export function buildNivodaQuery(params = {}) {
       .filter(Boolean);
   }
 
-  if (params.available === 'true') {
-    query.availability = ['AVAILABLE'];
-  }
+  // Nivoda staging rejects some availability filter shapes (502). Filter in provider after fetch instead.
 
   return query;
 }

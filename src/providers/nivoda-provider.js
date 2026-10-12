@@ -73,8 +73,12 @@ export const nivodaProvider = {
     });
 
     const result = data?.diamonds_by_query || { total_count: 0, items: [] };
-    const items = (result.items || []).map(normalizeNivodaItem);
-    const total = Number(result.total_count || 0);
+    let items = (result.items || []).map(normalizeNivodaItem);
+    if (params.available === 'true') {
+      items = items.filter((diamond) => diamond.available);
+    }
+    const total =
+      params.available === 'true' ? items.length : Number(result.total_count || 0);
 
     return {
       provider: 'nivoda',
@@ -90,7 +94,7 @@ export const nivodaProvider = {
     this.assertConfigured();
 
     const data = await nivodaGraphql(DIAMONDS_BY_QUERY, {
-      query: buildNivodaQuery({ available: 'true' }),
+      query: buildNivodaQuery({}),
       offset: 0,
       limit: 100,
       order: buildNivodaOrder('price_asc'),
