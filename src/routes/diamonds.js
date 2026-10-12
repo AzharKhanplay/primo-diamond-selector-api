@@ -35,6 +35,23 @@ diamondsRouter.get('/search', async (req, res, next) => {
   }
 });
 
+diamondsRouter.get('/item', async (req, res, next) => {
+  try {
+    const provider = getProvider();
+    const id = req.query.id;
+    if (!id) {
+      return res.status(400).json({ error: 'Missing id query parameter' });
+    }
+    const diamond = await provider.getById(String(id));
+    if (!diamond) {
+      return res.status(404).json({ error: 'Diamond not found' });
+    }
+    res.json({ item: diamond });
+  } catch (error) {
+    next(error);
+  }
+});
+
 diamondsRouter.get('/:id', async (req, res, next) => {
   try {
     const provider = getProvider();

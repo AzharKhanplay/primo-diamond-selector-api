@@ -59,6 +59,13 @@ export function normalizeNivodaItem(item) {
   const price = Number(item?.markup_price ?? item?.price ?? 0);
   const labgrown = Boolean(cert.labgrown);
 
+  const length = cert.length != null ? Number(cert.length) : null;
+  const width = cert.width != null ? Number(cert.width) : null;
+  let ratio = null;
+  if (length && width) {
+    ratio = Number((Math.max(length, width) / Math.min(length, width)).toFixed(2));
+  }
+
   return {
     id: String(item.id),
     sku: cert.certNumber ? String(cert.certNumber) : String(item.id),
@@ -73,12 +80,17 @@ export function normalizeNivodaItem(item) {
     lab: cert.lab || '',
     certificate: cert.certNumber ? String(cert.certNumber) : '',
     type: labgrown ? 'lab' : 'natural',
+    growthMethod: cert.labgrown_type || '',
     price,
     currency: 'GBP',
     available: isAvailable(item?.diamond?.availability),
+    availability: item?.diamond?.availability || '',
+    tablePercent: cert.table != null ? Number(cert.table) : null,
+    depthPercent: cert.depthPercentage != null ? Number(cert.depthPercentage) : null,
+    ratio,
     measurements: {
-      length: cert.length != null ? Number(cert.length) : null,
-      width: cert.width != null ? Number(cert.width) : null,
+      length,
+      width,
       depth: cert.depth != null ? Number(cert.depth) : null,
     },
     imageUrl: item?.diamond?.image || '',
