@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import { config } from './config.js';
+import { config, isAllowedCorsOrigin } from './config.js';
 import { diamondsRouter } from './routes/diamonds.js';
 import { getProvider } from './providers/index.js';
 import { nivodaProvider } from './providers/nivoda-provider.js';
@@ -13,7 +13,7 @@ app.use(express.json({ limit: '32kb' }));
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || config.corsOrigins.length === 0 || config.corsOrigins.includes(origin)) {
+      if (isAllowedCorsOrigin(origin)) {
         callback(null, true);
         return;
       }

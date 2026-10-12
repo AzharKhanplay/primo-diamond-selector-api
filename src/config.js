@@ -30,3 +30,20 @@ export function isNivodaConfigured() {
   const { apiUrl, username, password } = config.nivoda;
   return Boolean(apiUrl && username && password);
 }
+
+/** Shopify storefront, theme editor preview, and local dev. */
+export function isAllowedCorsOrigin(origin) {
+  if (!origin) return true;
+  if (config.corsOrigins.includes(origin)) return true;
+
+  try {
+    const { hostname } = new URL(origin);
+    if (hostname === 'localhost' || hostname === '127.0.0.1') return true;
+    if (hostname.endsWith('.myshopify.com')) return true;
+    if (hostname.endsWith('.shopifypreview.com')) return true;
+  } catch {
+    return false;
+  }
+
+  return config.corsOrigins.length === 0;
+}
